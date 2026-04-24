@@ -41,6 +41,7 @@ ROUND_FUNCS: dict[str, _RoundingFunc] = {
 def read(
     where: str | pathlib.Path,
     round_func: str | _RoundingFunc = "none",
+    custom_distances: any = None
 ) -> ProblemData:
     """
     Reads the ``VRPLIB`` file at the given location, and returns a
@@ -88,7 +89,7 @@ def read(
             f" or one of {ROUND_FUNCS.keys()}."
         )
 
-    parser = _InstanceParser(vrplib.read_instance(where), round_func)
+    parser = _InstanceParser(vrplib.read_instance(where, custom_distances=custom_distances), round_func)
     builder = _ProblemDataBuilder(parser)
     return builder.data()
 

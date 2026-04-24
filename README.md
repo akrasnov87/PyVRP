@@ -58,6 +58,50 @@ Before you start working on your contribution, please have a look [here][2] to g
 Make sure to discuss the change first in a GitHub issue.
 Feel free to open a new one if no appropriate issue already exists!
 
+## Build
+
+<pre>
+# 1. Добавьте репозиторий с современными версиями GCC
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+sudo apt-get update
+
+# 2. Установите GCC 13 и G++ 13
+sudo apt-get install -y gcc-13 g++-13
+
+# 3. Сделайте GCC 13 версией по умолчанию
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 \
+                         --slave /usr/bin/g++ g++ /usr/bin/g++-13
+
+# 4. Проверьте установленную версию
+gcc --version  # Должно показать 13.x.x
+</pre>
+
+<pre>
+uv venv --python 3.11  # или 3.14
+source .venv/bin/activate
+pip install build twine
+uv sync
+
+uv build
+</pre>
+
+### Install
+
+<pre>
+pip install dist/pyvrp-0.14.0a0.tar.gz
+</pre>
+
+#### Clean
+<pre>
+# Очистка кэша сборок uv
+uv clean
+
+rm -rf build/
+
+# Повторная синхронизация и сборка
+uv sync
+</pre>
+
 ### How to cite PyVRP
 
 If you use PyVRP in your research, please consider citing the following paper:
