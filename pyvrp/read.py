@@ -176,6 +176,10 @@ class _InstanceParser:
 
     def edge_weight(self) -> np.ndarray:
         return self.round_func(self.instance["edge_weight"])
+    
+    def client_names(self) -> np.ndarray:
+        names = self.instance.get("client_names", [])
+        return names if names else [str(i) for i in range(self.num_locations)]
 
     def depot_idcs(self) -> np.ndarray:
         return self.instance.get("depot", np.array([0]))
@@ -392,6 +396,7 @@ class _ProblemDataBuilder:
             for client in members:
                 idx2group[client] = group
 
+        names = self.parser.client_names()
         demands = self.parser.demands()
         backhauls = self.parser.backhauls()
         service_duration = self.parser.service_times()
@@ -412,6 +417,7 @@ class _ProblemDataBuilder:
                 prize=prizes[idx],
                 required=required[idx] and idx2group[idx - num_depots] is None,
                 group=idx2group[idx - num_depots],
+                name=names[idx]
             )
             for idx in range(num_depots, num_depots + num_clients)
         ]
